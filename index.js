@@ -134,6 +134,25 @@ function fitToContainer(canvas){
   canvas.height = document.body.clientHeight - 20;
 }
 
+function colorize(dots, palette) {
+  const ys = dots.map(d => d.y);
+  const hi_y = Math.max(...ys);
+  const lo_y = Math.min(...ys);
+  for (var i = 0; i < dots.length; i++) {
+    const p = (dots[i].y - lo_y) / (hi_y - lo_y);
+    dots[i].color = palette[Math.floor(p * (palette.length-1))];
+  }
+}
+
+// http://www.colourlovers.com/palette/725298/Strawberry_Mousse
+const palette = [
+  "#A79C8E",
+  "#F8ECC9",
+  "#F1BBBA",
+  "#EB9F9F",
+  "#6B5344"
+];
+
 function start(heartImage, volumentalImage) {
   const canvas = document.getElementById("target");
   const ctx = canvas.getContext("2d");
@@ -145,15 +164,16 @@ function start(heartImage, volumentalImage) {
 
   const dots = fitDots(volumental);
   //const dots = fitDots(heart);
+  colorize(dots, palette);
   
   function animate(t) {
     ctx.resetTransform();
     ctx.translate(canvas.width/2, canvas.height/2);
     ctx.scale(3, 3);
     ctx.translate(-volumental.width/2, -volumental.height/2);
-    ctx.fillStyle = "#000000";
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
+      ctx.fillStyle = dot.color || "#000000";
       ctx.beginPath();
       ctx.arc(dot.x, dot.y, dot.r, 0, 2 * Math.PI);
       ctx.fill();
