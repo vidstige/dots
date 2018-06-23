@@ -148,9 +148,9 @@ function start(heartImage, volumentalImage) {
   
   function animate(t) {
     ctx.resetTransform();
-    ctx.translate(
-      (canvas.width - volumental.width)/2,
-      (canvas.height - volumental.height)/2);
+    ctx.translate(canvas.width/2, canvas.height/2);
+    ctx.scale(3, 3);
+    ctx.translate(-volumental.width/2, -volumental.height/2);
     ctx.fillStyle = "#000000";
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
