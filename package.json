@@ -1,0 +1,14 @@
+{
+  "name": "dots",
+  "version": "1.0.0",
+  "description": "Demo",
+  "main": "index.js",
+  "scripts": {
+    "start": "python -m http.server"
+  },
+  "repository": "https://github.com/vidstige/dots",
+  "author": "Samuel Carlsson <samuel.carlsson@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+  }
+}
