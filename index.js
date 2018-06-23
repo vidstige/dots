@@ -139,6 +139,21 @@ function colorize(dots, palette) {
   }
 }
 
+function normalize(dots) {
+  const xs = dots.map(function (d) { return d.x; });
+  const ys = dots.map(function (d) { return d.y; });
+  const x_hi = Math.max(...xs);
+  const x_lo = Math.min(...xs);
+  const y_hi = Math.max(...ys);
+  const y_lo = Math.min(...ys);
+  const s = Math.max(x_hi - x_lo, y_hi - y_lo);
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].x = (dots[i].x - x_lo) / s;
+    dots[i].y = (dots[i].y - y_lo) / s;
+    dots[i].r = dots[i].r / s;
+  }
+}
+
 // http://www.colourlovers.com/palette/725298/Strawberry_Mousse
 const palette = [
   "#A79C8E",
@@ -160,15 +175,14 @@ function start(heartImage, volumentalImage) {
   //const dots = fitDots(volumental);
   const dots = fitDots(heart);
   dots.sort(function(a, b) { return a.y - b.y; });
+  normalize(dots);
   colorize(dots, palette);
-
-  console.log(dots);
   
   function animate(t) {
     ctx.resetTransform();
     ctx.translate(canvas.width/2, canvas.height/2);
-    ctx.scale(3, 3);
-    ctx.translate(-volumental.width/2, -volumental.height/2);
+    ctx.scale(512, 512);
+    ctx.translate(-0.5, -0.5);
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
       ctx.fillStyle = dot.color || "#000000";
