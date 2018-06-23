@@ -1,3 +1,15 @@
+function maxIndex(a) {
+  var max = a[0];
+  var index = 0;
+  for (var i = 1; i < a.length; i++) {
+      if (a[i] > max) {
+          index = i;
+          max = a[i];
+      }
+  }
+  return index;
+}
+
 function getImageData(ctx, image) {
   // Get image data
   ctx.drawImage(image, 0, 0);
@@ -44,10 +56,10 @@ function count(particles, dot) {
   return c;
 }
 
-// Fits dots to the particles
-function fit(img) {
+// Fits a single dot to the image
+function fitDot(img) {
   function alpha(x, y) {
-    return img.data[(x + y*img.width) * 4];
+    return img.data[(x + y*img.width) * 4 + 3];
   }
 
   // 1. Find all non-transparent points
@@ -70,18 +82,50 @@ function fit(img) {
     }
   }
 
+  // 2. Compute distances edges
   const n = particles.length;
-  var dists = Array(n);  // holds distances to all other particles
+  if (n == 0) {
+    return null;
+  }
   var limits = Array(n); // holds min distance to any edge
   for (var i = 0; i < n; i++) {
-    dists[i] = Array(n);
-    for (var j = 0; j < n; j++) {
-      dists[i][j] = dist2(particles[i], particles[j]);
-    }
-
     const edges_distances = edges.map(function(e) { return dist2(e, particles[i]); });
     limits[i] = Math.min(...edges_distances);
   }
+
+  // 3. Drop circle
+  const index = maxIndex(limits);
+  
+  const dot = {
+    x: particles[index].x,
+    y: particles[index].y,
+    r: Math.floor(Math.sqrt(limits[index]))
+  };
+
+  // 4. Erase particles
+  const padding = 2;
+  const r = dot.r + padding;
+  const r2 = r*r;
+  for (var x = dot.x - r; x < dot.x + r; x++) {
+    for (var y = dot.y - r; y < dot.y + r; y++) {
+      if (dist2(dot, {x: x, y:y}) < r2) {
+        img.data[(x + y*img.width) * 4 + 3] = 0;
+      }
+    }
+  }
+  
+  return dot;
+}
+
+function fitDots(img) {
+  var dots = [];
+  for (var i = 0; i < 20; i++) {
+    const dot = fitDot(img);
+    if (dot == null) break;
+    if (dot.r < 2) break;
+    dots.push(dot);
+  }
+  return dots;
 }
 
 function start(heartImage, volumentalImage) {
@@ -91,8 +135,21 @@ function start(heartImage, volumentalImage) {
   const heart = getImageData(ctx, heartImage);
   const volumental = getImageData(ctx, volumentalImage);
 
-  const first = fit(volumental);
-  console.log(first);
+  const dots = fitDots(volumental);
+  //const dots = fitDots(heart);
+  
+  function animate(t) {
+    ctx.fillStyle = "#000000";
+    for (var i = 0; i < dots.length; i++) {
+      const dot = dots[i];
+      ctx.beginPath();
+      ctx.arc(dot.x, dot.y, dot.r, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    //requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
 }
 
 function main() {
@@ -110,7 +167,6 @@ function main() {
       };
       img.src = images[i];
   }
-
 }
 
 document.addEventListener('DOMContentLoaded', main, false);
