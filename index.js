@@ -57,7 +57,7 @@ function count(particles, dot) {
 }
 
 // Fits a single dot to the image
-function fitDot(img) {
+function fitDot(img, padding, cap) {
   function alpha(x, y) {
     return img.data[(x + y*img.width) * 4 + 3];
   }
@@ -99,11 +99,10 @@ function fitDot(img) {
   const dot = {
     x: particles[index].x,
     y: particles[index].y,
-    r: Math.floor(Math.sqrt(limits[index]))
+    r: Math.min(Math.floor(Math.sqrt(limits[index])), cap)
   };
 
   // 4. Erase particles
-  const padding = 2;
   const r = dot.r + padding;
   const r2 = r*r;
   for (var x = dot.x - r; x < dot.x + r; x++) {
@@ -119,8 +118,8 @@ function fitDot(img) {
 
 function fitDots(img) {
   var dots = [];
-  for (var i = 0; i < 20; i++) {
-    const dot = fitDot(img);
+  while (true) {
+    const dot = fitDot(img, 1, 14);
     if (dot == null) break;
     if (dot.r < 2) break;
     dots.push(dot);
@@ -135,12 +134,8 @@ function fitToContainer(canvas){
 }
 
 function colorize(dots, palette) {
-  const ys = dots.map(d => d.y);
-  const hi_y = Math.max(...ys);
-  const lo_y = Math.min(...ys);
   for (var i = 0; i < dots.length; i++) {
-    const p = (dots[i].y - lo_y) / (hi_y - lo_y);
-    dots[i].color = palette[Math.floor(p * (palette.length-1))];
+    dots[i].color = palette[Math.floor(i * palette.length / dots.length)];
   }
 }
 
@@ -162,9 +157,12 @@ function start(heartImage, volumentalImage) {
   const heart = getImageData(ctx, heartImage);
   const volumental = getImageData(ctx, volumentalImage);
 
-  const dots = fitDots(volumental);
-  //const dots = fitDots(heart);
+  //const dots = fitDots(volumental);
+  const dots = fitDots(heart);
+  dots.sort(function(a, b) { return a.y - b.y; });
   colorize(dots, palette);
+
+  console.log(dots);
   
   function animate(t) {
     ctx.resetTransform();
