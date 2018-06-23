@@ -128,9 +128,17 @@ function fitDots(img) {
   return dots;
 }
 
+// fits canvas element to its parent
+function fitToContainer(canvas){
+  canvas.width = document.body.clientWidth - 20;
+  canvas.height = document.body.clientHeight - 20;
+}
+
 function start(heartImage, volumentalImage) {
   const canvas = document.getElementById("target");
   const ctx = canvas.getContext("2d");
+
+  fitToContainer(canvas);
 
   const heart = getImageData(ctx, heartImage);
   const volumental = getImageData(ctx, volumentalImage);
@@ -139,6 +147,10 @@ function start(heartImage, volumentalImage) {
   //const dots = fitDots(heart);
   
   function animate(t) {
+    ctx.resetTransform();
+    ctx.translate(
+      (canvas.width - volumental.width)/2,
+      (canvas.height - volumental.height)/2);
     ctx.fillStyle = "#000000";
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
