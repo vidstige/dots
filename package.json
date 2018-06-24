@@ -10,5 +10,6 @@
   "author": "Samuel Carlsson <samuel.carlsson@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "webpack": "^4.12.0"
   }
 }
