@@ -1,5 +1,14 @@
 const shape = require('./programs/shape.js');
 
+// http://www.colourlovers.com/palette/725298/Strawberry_Mousse
+const palette = [
+  "#A79C8E",
+  "#F8ECC9",
+  "#F1BBBA",
+  "#EB9F9F",
+  "#6B5344"
+];
+
 // fits canvas element to its parent
 function fitToContainer(canvas){
   canvas.width = document.body.clientWidth - 20;
@@ -39,7 +48,7 @@ function ready() {
 
   fitToContainer(canvas);
 
-  const loaders = programs.map(p => p.load(canvas, ctx));
+  const loaders = programs.map(p => p.load(canvas, ctx, palette));
   Promise.all(loaders).then(start);
 }
 
