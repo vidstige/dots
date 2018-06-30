@@ -15,13 +15,13 @@ function fitToContainer(canvas){
   canvas.height = document.body.clientHeight - 20;
 }
 
-function start(programs) { 
+function start(animations) { 
   const canvas = document.getElementById("target");
   const ctx = canvas.getContext("2d");
 
   function animate(t) {
-    console.log(programs);
-    const dots = programs[0].dots;
+    console.log(animations);
+    const dots = animations[0].dots;
     ctx.resetTransform();
     ctx.translate(canvas.width / 2, canvas.height/2);
     ctx.scale(512, 512);
@@ -38,7 +38,7 @@ function start(programs) {
   requestAnimationFrame(animate);
 }
 
-const programs = [
+const animations = [
   shape,
 ];
 
@@ -48,7 +48,7 @@ function ready() {
 
   fitToContainer(canvas);
 
-  const loaders = programs.map(p => p.load(canvas, ctx, palette));
+  const loaders = animations.map(p => p.load(canvas, ctx, palette));
   Promise.all(loaders).then(start);
 }
 
