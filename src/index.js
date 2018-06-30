@@ -1,4 +1,4 @@
-const shape = require('./programs/shape.js');
+const shape = require('./animations/shape.js');
 
 // http://www.colourlovers.com/palette/725298/Strawberry_Mousse
 const palette = [
@@ -49,7 +49,7 @@ function ready() {
 
   fitToContainer(canvas);
 
-  const loaders = animations.map(p => p.load(canvas, ctx, palette));
+  const loaders = animations.map(l => l.load(canvas, ctx, palette));
   Promise.all(loaders).then(start);
 }
 
