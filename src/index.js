@@ -19,13 +19,14 @@ function start(animations) {
   const canvas = document.getElementById("target");
   const ctx = canvas.getContext("2d");
 
+  ctx.resetTransform();
+  ctx.translate(canvas.width / 2, canvas.height/2);
+  ctx.scale(512, 512);
+  ctx.translate(-0.5, -0.5);
+
   function animate(t) {
     console.log(animations);
     const dots = animations[0].dots;
-    ctx.resetTransform();
-    ctx.translate(canvas.width / 2, canvas.height/2);
-    ctx.scale(512, 512);
-    ctx.translate(-0.5, -0.5);
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
       ctx.fillStyle = dot.color || "#000000";
