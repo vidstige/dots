@@ -168,7 +168,7 @@ function load(canvas, ctx, palette) {
             done.push(this);
             if (done.length == images.length) {
               console.log("all loaded");
-              resolve(new Shape(ctx, done[0]));
+              resolve(new Shape(ctx, done[0], palette));
             }
         };
         img.src = images[i];
