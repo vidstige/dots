@@ -1,3 +1,4 @@
+const one = require('./animations/one.js');
 const shape = require('./animations/shape.js');
 
 // http://www.colourlovers.com/palette/725298/Strawberry_Mousse
@@ -40,7 +41,8 @@ function start(animations) {
 }
 
 const animations = [
-  shape,
+  one,
+  //shape,
 ];
 
 function ready() {
