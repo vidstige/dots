@@ -31,7 +31,9 @@ function start(animations) {
     const dots = animation.dots();
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
-      ctx.fillStyle = dot.color || "#000000";
+      const pi = ~~(i * palette.length / dots.length);
+      console.log(pi, palette[pi]);
+      ctx.fillStyle = palette[pi];
       ctx.beginPath();
       ctx.arc(dot.x, dot.y, dot.r, 0, 2 * Math.PI);
       ctx.fill();

@@ -128,12 +128,6 @@ function fitDots(img) {
   return dots;
 }
 
-function colorize(dots, palette) {
-  for (var i = 0; i < dots.length; i++) {
-    dots[i].color = palette[Math.floor(i * palette.length / dots.length)];
-  }
-}
-
 function normalize(dots) {
   const xs = dots.map(function (d) { return d.x; });
   const ys = dots.map(function (d) { return d.y; });
@@ -154,7 +148,6 @@ function Shape(ctx, image, palette) {
   const _dots = fitDots(img);
   _dots.sort(function(a, b) { return a.y - b.y; });
   normalize(_dots);
-  colorize(_dots, palette);
   this.dots = function(t) {
     return _dots;
   };
