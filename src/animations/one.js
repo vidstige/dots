@@ -1,11 +1,14 @@
 function One(canvas, ctx, palette) {
-  this.dots = [];
+  var _dots = [];
   for (var i = 0; i < palette.length; i++) {
-    this.dots.push(
+    _dots.push(
       {x: 1  * (i / palette.length), y: 0.5,
        r: 0.05, color: palette[i]}
     );
   }
+  this.dots = function(t) {
+    return _dots;
+  };
 }
 
 function load() {

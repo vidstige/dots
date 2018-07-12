@@ -151,10 +151,13 @@ function normalize(dots) {
 
 function Shape(ctx, image, palette) {
   const img = getImageData(ctx, image);
-  this.dots = fitDots(img);
-  this.dots.sort(function(a, b) { return a.y - b.y; });
-  normalize(this.dots);
-  colorize(this.dots, palette);
+  const _dots = fitDots(img);
+  _dots.sort(function(a, b) { return a.y - b.y; });
+  normalize(_dots);
+  colorize(_dots, palette);
+  this.dots = function(t) {
+    return _dots;
+  };
 }
 
 function load(canvas, ctx, palette) {

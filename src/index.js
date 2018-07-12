@@ -25,9 +25,10 @@ function start(animations) {
   ctx.scale(512, 512);
   ctx.translate(-0.5, -0.5);
 
+  var animation = animations[0];
+
   function animate(t) {
-    console.log(animations);
-    const dots = animations[0].dots;
+    const dots = animation.dots();
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
       ctx.fillStyle = dot.color || "#000000";
