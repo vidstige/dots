@@ -155,20 +155,13 @@ function Shape(ctx, image, palette) {
 
 function load(canvas, ctx, palette) {
   return new Promise(function(resolve, reject) {
-    const images = [
-      'static/heart.png', 'static/volumental.png'];
-    var done = [];
-    for (var i = 0; i < images.length; i++) {
-        const img = new Image();
-        img.onload = function() {
-            done.push(this);
-            if (done.length == images.length) {
-              console.log("all loaded");
-              resolve(new Shape(ctx, done[0], palette));
-            }
-        };
-        img.src = images[i];
-    }
+    const image = 'static/heart.png';
+    const img = new Image();
+    img.onload = function() {
+      console.log("all loaded");
+      resolve(new Shape(ctx, this, palette));
+    };
+    img.src = image;
   });
 }
 
