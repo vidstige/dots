@@ -6,8 +6,8 @@ function One(canvas, ctx, palette) {
     }
     return dots;
   }
-  this.from = null; // any
-  this.to = null;   // any
+  this.from = function() { return null }; // any
+  this.to = function() { return null; }   // any
   this.dots = function(t, from, to) {
     if (t < 0.5) {
       if (!this.left) {

@@ -53,7 +53,7 @@ function Planner(animations) {
     const current = animations[n];
     const next = animations[(n+1) % animations.length];
 
-    const need = next.from == null ? current.to : next.from;
+    const need = next.from() == null ? current.to() : next.from();
     
     if (phase > 1 - this.transitionTime) {
       return lerp_dots(
