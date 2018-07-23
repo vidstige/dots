@@ -16,7 +16,14 @@ function fitToContainer(canvas){
   canvas.height = document.body.clientHeight - 20;
 }
 
-function start(animations) { 
+// returns dot array - blends animations during transitions
+function Planner(animations) {
+  this.dots = function(t) {
+    return animations[1].dots(t);
+  }
+}
+
+function start(planner) { 
   const canvas = document.getElementById("target");
   const ctx = canvas.getContext("2d");
 
@@ -26,10 +33,7 @@ function start(animations) {
   ctx.translate(-0.5, -0.5);
 
   function animate(t) {
-    const dotsB = animations[1].dots(t);
-    const dotsA = animations[0].dots(0.6, palette.length, animations[1].from);
-
-    const dots = dotsB;
+    const dots = planner.dots(t);
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
       const pi = ~~(i * palette.length / dots.length);
@@ -55,7 +59,7 @@ function ready() {
   fitToContainer(canvas);
 
   const loaders = animations.map(l => l.load(canvas, ctx, palette));
-  Promise.all(loaders).then(start);
+  Promise.all(loaders).then(ls => start(new Planner(ls)));
 }
 
 document.addEventListener('DOMContentLoaded', ready, false);
