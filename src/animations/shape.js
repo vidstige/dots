@@ -143,24 +143,35 @@ function normalize(dots) {
   }
 }
 
-function Shape(ctx, image, palette) {
+function computeDots(ctx, image, palette) {
   const img = getImageData(ctx, image);
   const _dots = fitDots(img);
   _dots.sort(function(a, b) { return a.y - b.y; });
   normalize(_dots);
+  return _dots;
+}
+
+function Shape(dots) {
   this.dots = function(t) {
-    return _dots;
+    return dots;
   };
 }
 
 function load(canvas, ctx, palette) {
   return new Promise(function(resolve, reject) {
     const image = 'static/heart.png';
+    const cached = localStorage.getItem(image);
+    if (cached) {
+      return resolve(new Shape(JSON.parse(cached)));
+    }
     const img = new Image();
     img.onload = function() {
-      console.log("all loaded");
-      resolve(new Shape(ctx, this, palette));
+      console.log("image loaded");
+      const dots = computeDots(ctx, this, palette);
+      localStorage.setItem(image, JSON.stringify(dots));
+      resolve(new Shape(dots));
     };
+    console.log("loading image");
     img.src = image;
   });
 }
