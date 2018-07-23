@@ -1,24 +1,20 @@
 function One(canvas, ctx, palette) {
-  this._createDots = function(n) {
+  var _createDots = function(n) {
     var dots = [];
     for (var i = 0; i < n; i++) {
       dots.push({x: Math.floor(palette.length * i / n) / palette.length, y: 0.5, r: 0.05});
     }
     return dots;
   }
-  this.from = function() { return null }; // any
-  this.to = function() { return null; }   // any
-  this.dots = function(t, from, to) {
-    if (t < 0.5) {
-      if (!this.left) {
-        this.left = this._createDots(from);
-      }
-      return this.left;
+  this._cache = {};
+  // Any - Can change count!
+  this.from = function() { return null };
+  this.to = function() { return null; }
+  this.dots = function(t, n) {
+    if (!(n in this._cache)) {
+      this._cache[n] = _createDots(n);
     }
-    if (!this.right) {
-      this.right = this._createDots(to);
-    }
-    return this.right;
+    return this._cache[n];
   };
 }
 

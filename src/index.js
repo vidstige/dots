@@ -56,13 +56,14 @@ function Planner(animations) {
     const need = next.from() == null ? current.to() : next.from();
     
     if (phase > 1 - this.transitionTime) {
+      const transition_t = (phase - (1 - this.transitionTime)) / this.transitionTime
       return lerp_dots(
-        current.dots(t, palette.length, need),
-        next.dots(t, need, need),
-        (phase - (1 - this.transitionTime)) / this.transitionTime
+        current.dots(t, need),
+        next.dots(t, need),
+        transition_t
         );
     }
-    return current.dots(t, need, need);
+    return current.dots(t, need);
   }
 }
 
