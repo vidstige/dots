@@ -1,5 +1,6 @@
 const one = require('./animations/one.js');
 const shape = require('./animations/shape.js');
+const circle = require('./animations/circle.js');
 
 // http://www.colourlovers.com/palette/725298/Strawberry_Mousse
 const palette = [
@@ -54,7 +55,7 @@ function Planner(animations) {
     const next = animations[(n+1) % animations.length];
 
     const need = next.from() == null ? current.to() : next.from();
-    
+
     if (phase > 1 - this.transitionTime) {
       const transition_t = (phase - (1 - this.transitionTime)) / this.transitionTime
       return lerp_dots(
@@ -93,7 +94,8 @@ function start(planner) {
 }
 
 const animations = [
-  one,
+  //one,
+  circle,
   shape,
 ];
 
