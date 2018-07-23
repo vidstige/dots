@@ -16,10 +16,23 @@ function fitToContainer(canvas){
   canvas.height = document.body.clientHeight - 20;
 }
 
+function clear(canvas, ctx) {
+  ctx.save();
+  // Use the identity matrix while clearing the canvas
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Restore the transform
+  ctx.restore();
+}
+
 // returns dot array - blends animations during transitions
 function Planner(animations) {
+  this.cycle = 3 * 1000;
   this.dots = function(t) {
-    return animations[1].dots(t);
+    //console.log(t);
+    const n = Math.floor((t / this.cycle) % animations.length);
+    return animations[n].dots(t);
   }
 }
 
@@ -34,6 +47,7 @@ function start(planner) {
 
   function animate(t) {
     const dots = planner.dots(t);
+    clear(canvas, ctx);
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
       const pi = ~~(i * palette.length / dots.length);
