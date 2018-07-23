@@ -3,13 +3,13 @@ function Grid(canvas, ctx, palette) {
   this.from = function(to) { return to; }
   this.to = function(from) { return from; }
   this.dots = function(t, n) {
-    const side = Math.floor(Math.sqrt(n));
+    const side = Math.ceil(Math.sqrt(n));
     var dots = [];
     for (var i = 0; i < n; i++) {
       dots.push({
         x: (i % side) / side,
         y: Math.floor(i / side) / side,
-        r: 0.01});
+        r: 0.05});
     }
     return dots;
   };

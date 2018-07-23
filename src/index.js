@@ -43,19 +43,32 @@ function lerp_dots(d1, d2, t) {
   return tmp;
 }
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 // returns dot array - blends animations during transitions
 function Planner(animations) {
   this.cycle = 3 * 1000;
   this.transitionTime = 0.2;
+  var count = null;
   this.dots = function(t) {
-    //console.log(t);
     const n = Math.floor((t / this.cycle) % animations.length);
     const phase = (t % this.cycle) / this.cycle;
 
     const current = animations[n];
     const next = animations[(n+1) % animations.length];
 
-    const need = next.from() == null ? current.to() : next.from();
+    count = current.from(count);
+    if (count == null) {
+      // Try to get count from next
+      count = next.from(null);
+      // No preference - go random
+      count = getRandomInt(palette.length * 2) + palette.length;
+    }
+  
+    //const need = next.from() == null ? current.to() : next.from();
+    const need = count;
 
     if (phase > 1 - this.transitionTime) {
       const transition_t = (phase - (1 - this.transitionTime)) / this.transitionTime
@@ -96,8 +109,8 @@ function start(planner) {
 
 const animations = [
   //one,
-  circle,
   shape,
+  circle,
   grid,
 ];
 
