@@ -26,13 +26,43 @@ function clear(canvas, ctx) {
   ctx.restore();
 }
 
+function lerp(a, b, t) {
+  return (1 - t) * a + t * b;
+}
+function lerp_dots(d1, d2, t) {
+  const tmp = [];
+  for (var i = 0; i < d1.length; i++) {
+    tmp.push({
+      x: lerp(d1[i].x, d2[i].x, t),
+      y: lerp(d1[i].y, d2[i].y, t),
+      r: lerp(d1[i].r, d2[i].r, t),
+      });
+  }
+  return tmp;
+}
+
 // returns dot array - blends animations during transitions
 function Planner(animations) {
   this.cycle = 3 * 1000;
+  this.transitionTime = 0.2;
   this.dots = function(t) {
     //console.log(t);
     const n = Math.floor((t / this.cycle) % animations.length);
-    return animations[n].dots(t);
+    const phase = (t % this.cycle) / this.cycle;
+
+    const current = animations[n];
+    const next = animations[(n+1) % animations.length];
+
+    const need = next.from == null ? current.to : next.from;
+    
+    if (phase > 1 - this.transitionTime) {
+      return lerp_dots(
+        current.dots(t, palette.length, need),
+        next.dots(t, need, need),
+        (phase - (1 - this.transitionTime)) / this.transitionTime
+        );
+    }
+    return current.dots(t, need, need);
   }
 }
 
