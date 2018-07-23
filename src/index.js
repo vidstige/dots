@@ -1,6 +1,7 @@
 const one = require('./animations/one.js');
 const shape = require('./animations/shape.js');
 const circle = require('./animations/circle.js');
+const grid = require('./animations/grid.js');
 
 // http://www.colourlovers.com/palette/725298/Strawberry_Mousse
 const palette = [
@@ -97,6 +98,7 @@ const animations = [
   //one,
   circle,
   shape,
+  grid,
 ];
 
 function ready() {
