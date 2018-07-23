@@ -25,10 +25,11 @@ function start(animations) {
   ctx.scale(512, 512);
   ctx.translate(-0.5, -0.5);
 
-  var animation = animations[0];
-
   function animate(t) {
-    const dots = animation.dots(t);
+    const dotsB = animations[1].dots(t);
+    const dotsA = animations[0].dots(0.6, palette.length, animations[1].from);
+
+    const dots = dotsB;
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
       const pi = ~~(i * palette.length / dots.length);
@@ -37,7 +38,7 @@ function start(animations) {
       ctx.arc(dot.x, dot.y, dot.r, 0, 2 * Math.PI);
       ctx.fill();
     }
-    //requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);
 }

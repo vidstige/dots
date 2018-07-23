@@ -11,12 +11,12 @@ function One(canvas, ctx, palette) {
   this.dots = function(t, from, to) {
     if (t < 0.5) {
       if (!this.left) {
-        this.left = this._createDots(palette.length);
+        this.left = this._createDots(from);
       }
       return this.left;
     }
     if (!this.right) {
-      this.right = this._createDots(palette.length);
+      this.right = this._createDots(to);
     }
     return this.right;
   };

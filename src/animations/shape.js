@@ -152,6 +152,8 @@ function computeDots(ctx, image, palette) {
 }
 
 function Shape(dots) {
+  this.from = dots.length;
+  this.to = dots.length;
   this.dots = function(t) {
     return dots;
   };
