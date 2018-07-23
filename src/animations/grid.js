@@ -1,3 +1,5 @@
+const Wave = require('../offsets/wave.js').Wave;
+
 function Grid(canvas, ctx, palette) {
   // Can do any number of dots, but cannot change count!
   this.from = function(to) { return to; }
@@ -16,6 +18,6 @@ function Grid(canvas, ctx, palette) {
 }
 
 function load() {
-  return new Grid(...arguments);
+  return new Wave(new Grid(...arguments), 0.80, 80, 0.02);
 }
 module.exports = {load};

@@ -106,7 +106,6 @@ function start(planner) {
   }
   requestAnimationFrame(animate);
 }
-
 const animations = [
   //one,
   shape,
