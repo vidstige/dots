@@ -1,10 +1,29 @@
 function One(canvas, ctx, palette) {
-  var _dots = [];
-  for (var i = 0; i < palette.length; i++) {
-    _dots.push({x: 1  * (i / palette.length), y: 0.5, r: 0.05});
+  this._createDots = function(n) {
+    console.log(n);
+    var dots = [];
+    for (var i = 0; i < n; i++) {
+      dots.push({x: Math.floor(palette.length * i / n) / palette.length, y: 0.5, r: 0.05});
+    }
+    return dots;
   }
-  this.dots = function(t) {
-    return _dots;
+  this.from = function() {
+    return null;
+  };
+  this.to = function() {
+    return null;
+  }
+  this.dots = function(t, from, to) {
+    if (t < 0.5) {
+      if (!this.left) {
+        this.left = this._createDots(palette.length * 2);
+      }
+      return this.left;
+    }
+    if (!this.right) {
+      this.right = this._createDots(palette.length * 2);
+    }
+    return this.right;
   };
 }
 

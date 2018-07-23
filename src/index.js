@@ -28,7 +28,7 @@ function start(animations) {
   var animation = animations[0];
 
   function animate(t) {
-    const dots = animation.dots();
+    const dots = animation.dots(t);
     for (var i = 0; i < dots.length; i++) {
       const dot = dots[i];
       const pi = ~~(i * palette.length / dots.length);
